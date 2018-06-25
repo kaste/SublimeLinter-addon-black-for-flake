@@ -13,7 +13,12 @@ BLACK_FIXABLES = (
 
 
 def plugin_loaded():
-    patch_flake8()
+    try:
+        sys.modules['sublack']
+    except LookupError:
+        flash('black-for-flake: sublack not ready or installed')
+    else:
+        patch_flake8()
 
 
 def plugin_unloaded():
@@ -29,11 +34,7 @@ def get_flake8():
     try:
         return sys.modules['SublimeLinter-flake8.linter'].Flake8
     except LookupError:
-        window = sublime.active_window()
-        if window:
-            window.status_message(
-                'black-for-flake: flake8 not ready or installed'
-            )
+        flash('black-for-flake: flake8 not ready or installed')
         return
 
 
@@ -66,3 +67,9 @@ def should_auto_config(view):
             'SublimeLinter-addon-black-for-flake.sublime-settings'
         ).get('selectors', [])
     )
+
+
+def flash(message):
+    window = sublime.active_window()
+    if window:
+        window.status_message(message)
