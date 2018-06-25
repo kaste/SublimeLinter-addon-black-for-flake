@@ -1,4 +1,9 @@
 {
+    // If any of these view setting keys returns a trueish
+    // for a given view, the plugin will kick in and
+    // automatically configure flake8.
+    // Typically, you set such a key in the 'settings' section
+    // in a project file.
     "selectors": [
         "sublack.black_on_save",
         "SublimeLinter-addon-black-for-flake.enable"
