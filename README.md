@@ -29,3 +29,5 @@ The keys can be configured using the plugin settings.
 ### TODO
 - Detect upgrades of flake8, and reapply the patch. 
 
+
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
