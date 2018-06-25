@@ -2,7 +2,7 @@
 
 This is an addon for SublimeLinter. 
 
-**You need to install both sublack and SublimeLinter-flake8**.
+**You need to install both [sublack](https://github.com/jgirardet/sublack) and [SublimeLinter-flake8](https://github.com/SublimeLinter/SublimeLinter-flake8)**.
 
 The plugin will auto configure flake8 and mute all warnings black can actually fix. 
 
