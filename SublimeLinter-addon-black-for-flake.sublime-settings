@@ -1,0 +1,6 @@
+{
+    "selectors": [
+        "sublack.black_on_save",
+        "SublimeLinter-addon-black-for-flake.enable"
+    ]
+}

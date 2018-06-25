@@ -27,7 +27,7 @@ def plugin_unloaded():
 
 def get_flake8():
     try:
-        return sys.modules['SublimeLinter-flake8.linters'].Flake8
+        return sys.modules['SublimeLinter-flake8.linter'].Flake8
     except LookupError:
         window = sublime.active_window()
         if window:
@@ -60,4 +60,9 @@ def patch_flake8():
 
 
 def should_auto_config(view):
-    return view.settings().get('sublack.black_on_save')
+    return any(
+        view.settings().get(key)
+        for key in sublime.load_settings(
+            'SublimeLinter-addon-black-for-flake.sublime-settings'
+        ).get('selectors', [])
+    )
