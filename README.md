@@ -6,7 +6,7 @@ This is an addon for SublimeLinter.
 
 The plugin will auto configure flake8 and mute all warnings black can actually fix. 
 
-It does this _iff_ a given view is configured with `"sublack.black_on_save": true` or `"SublimeLinter-addon-black-for-flake.enable": true`. Usually you set such a key in the 'settings' section of your project file. Like so:
+It does this _if_ a given view is configured with `"sublack.black_on_save": true` or `"SublimeLinter-addon-black-for-flake.enable": true`. Usually you set such a key in the 'settings' section of your project file. Like so:
 
 ```json
 {
