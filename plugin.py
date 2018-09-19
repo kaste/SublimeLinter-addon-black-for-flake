@@ -21,7 +21,11 @@ def plugin_loaded():
     except LookupError:
         flash('black-for-flake: sublack not ready or installed')
     else:
-        patch_flake8()
+        # SublimeLinter's own reloader, reloads in alphabetical order, and
+        # calls `plugin_loaded` immediately. We defer the patching, to ensure
+        # we patch the *next* flake8 plugin, not the *current* one which gets
+        # reloaded in a split second after here.
+        sublime.set_timeout_async(patch_flake8, 0)
 
 
 def plugin_unloaded():
