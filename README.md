@@ -2,9 +2,9 @@
 
 This is an addon for SublimeLinter. 
 
-**You need to install both [sublack](https://github.com/jgirardet/sublack) and [SublimeLinter-flake8](https://github.com/SublimeLinter/SublimeLinter-flake8)**.
+**You need to install [SublimeLinter-flake8](https://github.com/SublimeLinter/SublimeLinter-flake8)!**.  Highly recommended is to install **[sublack](https://github.com/jgirardet/sublack)** as well.
 
-The plugin will auto configure flake8 and mute all warnings black can actually fix. 
+The plugin will configure the flake8 plugin and mute all warnings black can actually fix. 
 
 It does this _only if_ a given view is configured with `"sublack.black_on_save": true` or `"SublimeLinter-addon-black-for-flake.enable": true`. Usually you set such a key in the 'settings' section of your project file. Like so:
 
