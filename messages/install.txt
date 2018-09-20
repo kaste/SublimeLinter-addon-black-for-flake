@@ -1,0 +1,33 @@
+You just installed SublimeLinter-addon-black-for-flake
+------------------------------------------------------
+
+- Make sure you have SublimeLinter-flake8 (https://github.com/SublimeLinter/SublimeLinter-flake8) installed.
+- Highly recommended is to install sublack (https://github.com/jgirardet/sublack) as well.
+
+This addon will automatically filter all reported warnings `black` can actually
+fix. It does this *only* for views for which `"sublack.black_on_save": true` 
+or `"SublimeLinter-addon-black-for-flake.enable": true` has been configured. 
+(Which keys it evaluates can itself be configured via the settings, but you probably don't need to.)
+
+Typically, at least as long as `black` is not the default in the python community, you set this in your project file. Like so:
+
+```json
+{
+    "folders": [
+        {
+            "path": "."
+        },
+    ],
+
+    "settings": {
+        "sublack.black_on_save": true
+    }
+}
+```
+
+for specific projects. 
+
+`sublack` allows you to switch black on or off temporarily per view, e.g. via the context menu. These views will get selected or deselected automatically as well.
+
+If you ever want this to be enabled by default, you could also set it up in your User Preferences.
+
