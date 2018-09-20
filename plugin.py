@@ -26,8 +26,8 @@ def plugin_loaded():
         sys.modules['sublack']
     except LookupError:
         flash('black-for-flake: sublack not ready or installed')
-    else:
-        patch_flake8()
+
+    patch_flake8()
 
 
 def plugin_unloaded():
