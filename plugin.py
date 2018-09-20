@@ -77,6 +77,7 @@ def should_auto_config(view):
 
 
 def flash(message):
+    print(message)
     window = sublime.active_window()
     if window:
         window.status_message(message)
