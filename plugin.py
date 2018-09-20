@@ -15,46 +15,70 @@ BLACK_FIXABLES = (
 )
 
 
+def dprint(*a, **k):
+    # print(*a, **k)
+    ...
+
+
 def plugin_loaded():
+    dprint('=<> plugin_loaded')
     try:
         sys.modules['sublack']
     except LookupError:
         flash('black-for-flake: sublack not ready or installed')
     else:
-        # SublimeLinter's own reloader, reloads in alphabetical order, and
-        # calls `plugin_loaded` immediately. We defer the patching, to ensure
-        # we patch the *next* flake8 plugin, not the *current* one which gets
-        # reloaded in a split second after here.
-        sublime.set_timeout_async(patch_flake8, 0)
+        patch_flake8()
 
 
 def plugin_unloaded():
-    global super_fn
-
-    if super_fn:
-        flake8 = get_flake8()
-        if flake8:
-            flake8.find_errors = super_fn
+    dprint('=<> plugin_unloaded')
+    unpatch_flake8()
 
 
-def get_flake8():
+def get_plugin_module():
     try:
-        return sys.modules['SublimeLinter-flake8.linter'].Flake8
+        return sys.modules['SublimeLinter-flake8.linter']
     except LookupError:
         flash('black-for-flake: flake8 not ready or installed')
         return
 
 
+def unpatch_flake8():
+    global super_fn
+
+    if super_fn is None:
+        return
+
+    plugin = get_plugin_module()
+    if not plugin:
+        return
+
+    dprint('--> Un-patching')
+    plugin.Flake8.find_errors = super_fn
+    super_fn = None
+
+    if plugin.plugin_unloaded.__name__ == 'blacked_unload':
+        delattr(plugin, 'plugin_unloaded')
+
+
 def patch_flake8():
     global super_fn
 
-    flake8 = get_flake8()
-    if not flake8:
+    plugin = get_plugin_module()
+    if not plugin:
         return
 
-    super_fn = flake8.find_errors
+    if plugin.Flake8.find_errors.__name__ == 'blacked_find_errors':
+        flash("black-for-flake: Already patched, how's that? 😕")
+        return
 
-    def find_errors(self, output):
+    if super_fn is not None:
+        flash("black-for-flake: super_fn is not None, how's that? 😕")
+
+    dprint('--> Patching')
+    super_fn = plugin.Flake8.find_errors
+
+    def blacked_find_errors(self, output):
         if should_auto_config(self.view):
             return [
                 error
@@ -64,7 +88,22 @@ def patch_flake8():
 
         return super_fn(self, output)
 
-    flake8.find_errors = find_errors
+    def blacked_unload():
+        dprint('=<> blacked_unload')
+        # When 'plugin_unloaded' is called, we unpatch immediately/sync.
+        # After that, Sublime/PC will update/replace the plugin. We have to
+        # guess how long this can take here.
+        unpatch_flake8()
+        sublime.set_timeout_async(patch_flake8, 1000)
+
+    plugin.Flake8.find_errors = blacked_find_errors
+    try:
+        plugin.plugin_unloaded
+    except AttributeError:
+        plugin.plugin_unloaded = blacked_unload
+    else:
+        flash("black-for-flake: Hm, Flake has a 'plugin_unloaded'? 🤔")
+        print(plugin.plugin_unloaded)
 
 
 def should_auto_config(view):
