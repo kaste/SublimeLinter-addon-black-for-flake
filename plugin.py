@@ -22,11 +22,6 @@ def dprint(*a, **k):
 
 def plugin_loaded():
     dprint('=<> plugin_loaded')
-    try:
-        sys.modules['sublack']
-    except LookupError:
-        flash('black-for-flake: sublack not ready or installed')
-
     patch_flake8()
 
 
