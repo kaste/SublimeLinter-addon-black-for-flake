@@ -1,4 +1,4 @@
-# Hi :wave:!
+# Hi 👋!
 
 This is an addon for SublimeLinter. 
 
