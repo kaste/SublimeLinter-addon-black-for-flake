@@ -78,7 +78,7 @@ def patch_flake8():
             return [
                 error
                 for error in super_fn(self, output)
-                if (error.error or error.warning) not in BLACK_FIXABLES
+                if (error.code or error.error or error.warning) not in BLACK_FIXABLES
             ]
 
         return super_fn(self, output)
